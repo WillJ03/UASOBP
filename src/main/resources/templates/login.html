@@ -1,0 +1,19 @@
+<form th:action="@{/validateLogin}" method="post"
+class="form-group" enctype="multipart/form-data">
+
+
+<label for="kode" class="form-label">Kode Seller</label>
+<input type="text" id="kode" name="kode"
+    required
+/>
+
+<label for="password" class="form-label">Password</label>
+<input
+    type="password"
+    id="password"
+    name = "password"
+/>
+
+<button type="submit" class="btn btn-primary"
+    name="Login">Login</button>
+</form>

@@ -1,0 +1,106 @@
+<html>
+<head>
+    <title>Buku</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/home.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/table.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/form.css}"/>
+    <link rel="stylesheet" 
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
+    <style>
+        .menu-card {
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+        }
+        .menu-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+        }
+        .icon {
+            font-size: 40px;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg" style="background-color: #8B4513;">
+    <div class="container-fluid">
+        <a class="navbar-brand fw-bold" href="/homepage">Perpustakaan</a>
+
+        <div class="d-flex">
+            <span class="navbar-text text-white me-3" 
+                  th:if="${logSeller != null}">
+                👋 Selamat Datang, <b th:text="${logSeller.getName()}"></b>
+            </span>
+            
+        </div>
+    </div>
+</nav>
+    <div class="first-box">
+        <h2>List Buku</h2>
+        <table class="styled-table">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>ID</th>
+                    <th>Judul</th>
+                    <th>Penulis</th>
+                    <th>Kategori</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody th:each="d, no : ${bukuList}">
+                <tr>
+                    <!-- Klik nomor untuk edit -->
+                    <td>
+                        <a th:href="@{/buku/{id}(id=${d.getId()})}"
+                           th:text="${no.count}"></a>
+                    </td>
+                    <!-- <td th:text="${d.getNama()}"></td> -->
+                    <td th:text="${d.getId()}"></td>
+                    <td th:text="${d.getJudul()}"></td>
+                    <td th:text="${d.getPenulis()}"></td>
+                    <td th:text="${d.getKategori()}"></td>
+                    <td th:text="${d.getStatus()}"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="second-box">
+        <div id="feedback-form">
+            <h2 class="header">Form Management</h2>
+            <form th:action="@{/buku/submit/{id}(id=${bukuRec?.getId()})}"
+                  method="post" th:object="${bukuInfo}" class="form-group">
+
+                  
+                  <label for="id" class="form-label">ID</label>
+                  <input type="number" id="id" name="id"                      
+                  th:value="${bukuRec != null} ? ${bukuRec.getId()} : '0'"
+                  readonly />
+                  
+                  <label for="judul" class="form-label">Judul</label>
+                  <input type="text" id="judul" name="judul"
+                         th:value="${bukuRec?.getJudul()}" 
+                         required />
+
+                         <label for="penulis" class="form-label">Penulis</label>
+                  <input type="text" id="penulis" name="penulis"
+                         th:value="${bukuRec?.getPenulis()}" 
+                         required />
+
+                         <label for="kategori" class="form-label">Kategori</label>
+                  <input type="text" id="kategori" name="kategori"
+                         th:value="${bukuRec?.getKategori()}" 
+                         required />
+             
+                <div class="button-group">
+                    <button type="submit" class="btn btn-primary" name="add">Add</button>
+                    <button type="submit" class="btn btn-success" name="edit">Edit</button>
+                    <button type="submit" class="btn btn-danger" name="delete">Delete</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>

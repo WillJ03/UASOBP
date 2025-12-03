@@ -1,0 +1,93 @@
+<html>
+<head>
+    <title>Produk Page</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/home.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/table.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/form.css}"/>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" 
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
+    <style>
+        .menu-card {
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+        }
+        .menu-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+        }
+        .icon {
+            font-size: 40px;
+        }
+    </style>
+</head>
+
+<body>
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg" style="background-color: #8B4513;">
+    <div class="container-fluid">
+        <a class="navbar-brand fw-bold" href="/homepage">Perpustakaan</a>
+
+        <div class="d-flex">
+            <span class="navbar-text text-white me-3" 
+                  th:if="${logMahasiswa != null}">
+                👋 Selamat Datang, <b th:text="${logMahasiswa.getName()}"></b>
+            </span>
+            <a class="btn btn-danger btn-sm" th:href="@{/logoutOrang}">🔒 Logout</a>
+        </div>
+    </div>
+</nav>
+    <div class="first-box">
+        <h2>Orang List</h2>
+        <table class="styled-table">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Nama</th>
+                    <th>ID</th>
+                </tr>
+            </thead>
+            <tbody th:each="d, no : ${orangList}">
+                <tr>
+                    <!-- Klik nomor untuk edit -->
+                    <td>
+                        <a th:href="@{/orang/{id}(id=${d.getId()})}"
+                           th:text="${no.count}"></a>
+                    </td>
+                    <td th:text="${d.getNama()}"></td>
+                    <td th:text="${d.getId()}"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="second-box">
+        <div id="feedback-form">
+            <h2 class="header">Form Management</h2>
+            <form th:action="@{/orang/submit/{id}(id=${orangRec?.getId()})}"
+                  method="post" th:object="${orangInfo}" class="form-group">
+
+                  
+                  <label for="id" class="form-label">ID</label>
+                  <input type="number" id="id" name="id"                      
+                  th:value="${orangRec != null} ? ${orangRec.getId()} : '0'"
+                  readonly />
+                  
+                  <label for="nama" class="form-label">Nama</label>
+                  <input type="text" id="nama" name="nama"
+                         th:value="${orangRec?.getNama()}" 
+                         required />
+             
+                <div class="button-group">
+                    <button type="submit" class="btn btn-primary" name="add">Add</button>
+                    <button type="submit" class="btn btn-success" name="edit">Edit</button>
+                    <button type="submit" class="btn btn-danger" name="delete">Delete</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>
